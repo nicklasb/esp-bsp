@@ -315,7 +315,7 @@ esp_err_t ssd1306_init(ssd1306_handle_t dev)
     ssd1306_write_cmd_byte(dev, 0xF1); //Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
     ssd1306_write_cmd_byte(dev, 0xDA); //--set com pins hardware configuration
     ssd1306_write_cmd_byte(dev, 0x02); //--set vcomh
-    ssd1306_write_cmd_byte(dev, 0x60); //Set VCOM Deselect Level
+    ssd1306_write_cmd_byte(dev, 0x60); //Set Display Start Line (40h~7Fh)
     ssd1306_write_cmd_byte(dev, 0x8D); //--set Charge Pump enable/disable
     ssd1306_write_cmd_byte(dev, 0x14); //--set(0x10) disable
     ssd1306_write_cmd_byte(dev, 0xA4); // Disable Entire Display On (0xa4/0xa5)
