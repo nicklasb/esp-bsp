@@ -301,38 +301,25 @@ esp_err_t ssd1306_init(ssd1306_handle_t dev)
     esp_err_t ret;
 
     ssd1306_write_cmd_byte(dev, 0xAE); //--turn off oled panel
-
+    ssd1306_write_cmd_byte(dev, 0x40); //--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
+    ssd1306_write_cmd_byte(dev, 0x81); //--set contrast control register
+    ssd1306_write_cmd_byte(dev, 0xCF); // Set SEG Output Current Brightness
+    ssd1306_write_cmd_byte(dev, 0xA1); //--Set SEG/Column Mapping
+    ssd1306_write_cmd_byte(dev, 0xC0); //Set COM/Row Scan Direction
+    ssd1306_write_cmd_byte(dev, 0xA6); //--set normal display
     ssd1306_write_cmd_byte(dev, 0xA8); //--set multiplex ratio(1 to 64)
-    ssd1306_write_cmd_byte(dev, 0x1F); //--1/64 duty
-
-    ssd1306_write_cmd_byte(dev, 0xD3); //--set display offset
-    ssd1306_write_cmd_byte(dev, 0x00); //--
-
-    ssd1306_write_cmd_byte(dev, 0x60); //--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
-
-    ssd1306_write_cmd_byte(dev, 0xA1); //--Set SEG/Column Mapping (vertical mirror)
-   
-    ssd1306_write_cmd_byte(dev, 0xC0); //Set COM/Row Scan Direction 
-
-    ssd1306_write_cmd_byte(dev, 0xD5); //--set display clock divide ratio/oscillator frequency
+    ssd1306_write_cmd_byte(dev, 0x1f); //--1/64 duty
+    ssd1306_write_cmd_byte(dev, 0xd5); //--set display clock divide ratio/oscillator frequency
     ssd1306_write_cmd_byte(dev, 0x80); //--set divide ratio, Set Clock as 100 Frames/Sec
-
+    ssd1306_write_cmd_byte(dev, 0xD9); //--set pre-charge period
+    ssd1306_write_cmd_byte(dev, 0xF1); //Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
     ssd1306_write_cmd_byte(dev, 0xDA); //--set com pins hardware configuration
     ssd1306_write_cmd_byte(dev, 0x02); //--set vcomh
-
-    ssd1306_write_cmd_byte(dev, 0x81); //--set contrast control register
-    ssd1306_write_cmd_byte(dev, 0x05); // Set SEG Output Current Brightness
-
+    ssd1306_write_cmd_byte(dev, 0x60); //Set VCOM Deselect Level
+    ssd1306_write_cmd_byte(dev, 0x8D); //--set Charge Pump enable/disable
+    ssd1306_write_cmd_byte(dev, 0x14); //--set(0x10) disable
     ssd1306_write_cmd_byte(dev, 0xA4); // Disable Entire Display On (0xa4/0xa5)
-
-    ssd1306_write_cmd_byte(dev, 0xDB); //Set VCOM Deselect Level
-    ssd1306_write_cmd_byte(dev, 0x40); // --set voltage de
-
-    ssd1306_write_cmd_byte(dev, 0xA6); //--set normal display (A7 inverse)
-
- //   ssd1306_write_cmd_byte(dev, 0xD9); //--set pre-charge period
- //   ssd1306_write_cmd_byte(dev, 0xF1); //Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
-
+    ssd1306_write_cmd_byte(dev, 0xA6); // Disable Inverse Display On (0xa6/a7)
 
     const uint8_t cmd[2] = {0x20, 1}; //-- set vertical adressing mode
     ssd1306_write_cmd(dev, cmd, sizeof(cmd));
@@ -342,11 +329,6 @@ esp_err_t ssd1306_init(ssd1306_handle_t dev)
     cmd2[0] = 0x22;
     cmd2[2] = 7;
     ssd1306_write_cmd(dev, cmd2, sizeof(cmd2)); //--set row address to zero
-
-    ssd1306_write_cmd_byte(dev, 0x8D); //--set Charge Pump enable/disable
-    ssd1306_write_cmd_byte(dev, 0x14); //--set(0x10) disable
-    ssd1306_write_cmd_byte(dev, 0x2E); // Disable scroll
-    ssd1306_write_cmd_byte(dev, 0xA6); // Disable Inverse Display On (0xa6/a7)
 
     ret = ssd1306_write_cmd_byte(dev, 0xAF); //--turn on oled panel
 
